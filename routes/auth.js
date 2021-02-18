@@ -18,7 +18,7 @@ router.get('/', auth,  (req, res) => {
 // @access   Public
 router.post(
   '/',
-  check('username', 'Please include a valid username').notEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
   check('password', 'Password is required').exists(),
    (req, res) => {
     

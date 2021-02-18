@@ -3,7 +3,7 @@ const router = express.Router();
 const {auth} = require('../middleware/auth');
 const { check } = require('express-validator');
 const {user_register} = require('../controllers/users');
-const User = require('../models/User');
+const User = require('../models/users');
 
 
 
@@ -13,7 +13,7 @@ const User = require('../models/User');
 router.post(
   '/',
   check('name', 'Name is required').notEmpty(),
-  check('username', 'Please include a valid username').notEmpty(),
+  check('email', 'Please include a valid email').isEmail(),
   check(
     'password',
     'Please enter a password with 6 or more characters'

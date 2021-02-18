@@ -27,7 +27,7 @@ const auth = (req, res, next)=> {
 };
 
 
-const User = require('../models/User');
+
 
 
 
