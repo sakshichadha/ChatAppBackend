@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const User = require('../models/users');
+const Conversation = require('../models/Chat');
 const {log_and_send_error} = require('./error');
 
 const user_register = async (req, res) => {
@@ -53,7 +54,8 @@ const user_register = async (req, res) => {
   } catch (err) {
     log_and_send_error(err.message, 500, 'Server Error');
   }
-};
+}
+
 
 module.exports = {
   user_register,

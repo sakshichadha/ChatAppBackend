@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {auth} = require('../middleware/auth');
 const { check } = require('express-validator');
-const {user_register} = require('../controllers/users');
+const {user_register,getConversations,newConversation} = require('../controllers/users');
 const User = require('../models/users');
 
 
@@ -23,6 +23,8 @@ router.post(
     user_register(req, res);
   }
 );
+
+
 
 
 
