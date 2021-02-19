@@ -3,10 +3,9 @@ const User = require('../models/Message');
 const {log_and_send_error} = require('./error');
 const Event = require('../models/Message');
 
-const Event=require('../../models/Event')
 
 // This 
-exports.getEvents = async (req,res)=>{
+ exports.getEvents = async (req,res)=>{
 
     const { chatRoomId,timestamp } = req.body;
     try {

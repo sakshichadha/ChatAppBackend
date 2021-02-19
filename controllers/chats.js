@@ -11,8 +11,3 @@ const get_chats = async (req,res) => {
     }
 };
 
-const add_chat = async (req,res) => {
-    try{
-        
-    }
-}

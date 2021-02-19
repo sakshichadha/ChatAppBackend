@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {auth} = require('../middleware/auth');
+const auth = require('../middleware/auth');
 const { check } = require('express-validator');
-const {user_register,getConversations,newConversation} = require('../controllers/users');
-const User = require('../models/users');
 
+const User = require('../models/users');
+const userController= require('../controllers/users');
 
 
 // @route    POST api/users
@@ -27,13 +27,13 @@ router.post(
 // @route    POST api/users/conversations
 // @desc     Get all conversations of a user
 // @access   Private
-router.get('/conversations',auth, getConversations)
+router.get('/conversations',auth, userController.getConversations)
 
 
 // @route    POST api/users/newconversation
 // @desc     Create new conversation with a user
 // @access   Private
-router.post('/newConversation',auth, newConversation)
+router.post('/newConversation',auth, userController.newConversation)
 
 
 

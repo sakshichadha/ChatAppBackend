@@ -5,7 +5,7 @@ const User = require('../models/users');
 const Conversation = require('../models/Chat');
 const {log_and_send_error} = require('./error');
 
-const user_register = async (req, res) => {
+exports.user_register = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
    
@@ -56,7 +56,7 @@ const user_register = async (req, res) => {
   }
 }
 
-const getConversations = async (req,res)=>{
+exports.getConversations = async (req,res)=>{
       
   try {
  let conversations= await Conversation.find({ recipients: { $elemMatch: { $eq: req.user.id} } })
@@ -69,9 +69,7 @@ const getConversations = async (req,res)=>{
   }
 
 }
-
-
-const newConversation = async (req,res)=>{
+exports.newConversation = async (req,res)=>{
     
   const { username } = req.body;
   try {
@@ -99,9 +97,4 @@ const newConversation = async (req,res)=>{
 }
 
 
-module.exports = {
-  user_register,
-  getConversations,
-  newConversation
-  
-};
+

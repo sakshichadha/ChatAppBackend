@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { check } = require('express-validator');
-const {auth} = require('../middleware/auth');
+const auth = require('../middleware/auth');
 const {user_by_token,auth_token} = require('../controllers/auth');
 const { ConnectionStates } = require('mongoose');
 
