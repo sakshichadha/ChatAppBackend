@@ -20,7 +20,7 @@ router.post(
   ).isLength({ min: 6 }),
   
    (req, res) => {
-    user_register(req, res);
+    userController.user_register(req, res);
   }
 );
 

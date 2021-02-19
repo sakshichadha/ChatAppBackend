@@ -4,7 +4,7 @@ const { validationResult } = require('express-validator');
 const User = require('../models/users');
 const Conversation = require('../models/Chat');
 const {log_and_send_error} = require('./error');
-
+const config = require("config");
 exports.user_register = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -44,7 +44,7 @@ exports.user_register = async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.SECRET,
+      config.get("jwtSecret"),
       { expiresIn: '5 days' },
       (err, token) => {
         if (err) throw err;
@@ -69,11 +69,12 @@ exports.getConversations = async (req,res)=>{
   }
 
 }
+
 exports.newConversation = async (req,res)=>{
     
-  const { username } = req.body;
-  try {
- let otherUser=  await User.findOne({username:username }).select("-password")
+const { username } = req.body;
+try {
+ let otherUser=  await User.findOne({name:username }).select("-password")
 
  if(!otherUser){
   res.status(404).send('This user does not exist')

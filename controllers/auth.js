@@ -35,7 +35,7 @@ const auth_token = async (req, res) => {
 
     jwt.sign(
       payload,
-      config.get("SECRET"),
+      config.get("jwtSecret"),
       { expiresIn: "5 days" },
       (err, token) => {
         if (err) throw err;
