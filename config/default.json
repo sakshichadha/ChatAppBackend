@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://Sakshi_chadha:Blessings@219@mern.kd5gg.mongodb.net/chat?retryWrites=true&w=majority",
+  "SECRET": "mysecrettoken"
+}
