@@ -24,6 +24,17 @@ router.post(
   }
 );
 
+// @route    POST api/users/conversations
+// @desc     Get all conversations of a user
+// @access   Private
+router.get('/conversations',auth, getConversations)
+
+
+// @route    POST api/users/newconversation
+// @desc     Create new conversation with a user
+// @access   Private
+router.post('/newConversation',auth, newConversation)
+
 
 
 

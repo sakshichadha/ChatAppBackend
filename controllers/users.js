@@ -56,8 +56,52 @@ const user_register = async (req, res) => {
   }
 }
 
+const getConversations = async (req,res)=>{
+      
+  try {
+ let conversations= await Conversation.find({ recipients: { $elemMatch: { $eq: req.user.id} } })
+ console.log(conversations)
+ res.status(200).send(conversations);
+  } 
+  catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+
+}
+
+
+const newConversation = async (req,res)=>{
+    
+  const { username } = req.body;
+  try {
+ let otherUser=  await User.findOne({username:username }).select("-password")
+
+ if(!otherUser){
+  res.status(404).send('This user does not exist')
+ }
+ let oldConvo= await Conversation.findOne({ recipients: [req.user.id,otherUser.id] })
+ if(oldConvo){
+     res.status(200).send(oldConvo)
+ }
+ else{
+  let newConvo= new Conversation({recipients:[req.user.id,otherUser.id]})
+  await newConvo.save();
+ res.status(200).send(newConvo);
+ }
+
+  } catch (error) {
+      
+    console.error(error.message);
+    res.status(500).send('Server error');
+  }
+
+}
+
 
 module.exports = {
   user_register,
+  getConversations,
+  newConversation
   
 };
