@@ -3,8 +3,8 @@ const connectDB = require('./config/db');
 const dotenv = require("dotenv");
 const app = express();
 dotenv.config();
-var server = require('http').createServer(app);  
-var io = require('socket.io')(server);
+// const socketio=require('socket.io')
+
 
 // Connect Database
 connectDB();
@@ -16,14 +16,7 @@ app.get('/', (req, res) => {
   
   res.send('working');
 });
-io.on('connection', (client) => {
-  client.on('subscribeToTimer', (interval) => {
-    console.log('client is subscribing to timer with interval ', interval);
-    setInterval(() => {
-      client.emit('timer', new Date());
-    }, interval);
-  });
-});
+
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/event', require('./routes/messages'));
