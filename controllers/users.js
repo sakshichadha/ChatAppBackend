@@ -68,32 +68,32 @@ exports.getConversations = async (req, res) => {
 };
 
 exports.newConversation = async (req, res) => {
-  console.log("inside route add conversation");
+  //console.log("inside route add conversation");
   const { user_name } = req.body;
-  console.log(user_name);
+  //console.log(user_name);
   try {
     let otherUser = await User.findOne({ name: user_name }).select("-password");
 
     if (!otherUser) {
       res.status(404).send("This user does not exist");
     }
-    console.log(otherUser);
+    //console.log(otherUser);
     let oldConvo = await Conversation.findOne({
       recipients: [req.user.id, otherUser.id],
     });
-    console.log(oldConvo);
-    console.log("inside route add conversation1");
+    
     if (oldConvo) {
-      console.log("inside route add conversation hello");
+      //console.log("inside route add conversation hello");
       res.status(200).send(oldConvo);
     } else {
-      console.log("inside route add conversation old");
+      //console.log("inside route add conversation old");
       let newConvo = new Conversation({
         recipients: [req.user.id, otherUser.id],
-      });
-      console.log("inside route add conversation2");
+      })
+      //console.log("inside route add conversation2");
       await newConvo.save();
-      console.log("conversation saved");
+      newConvo = await Conversation.findOne({recipients: [req.user.id, otherUser.id],}).populate("recipients")
+      //console.log("conversation saved");
       res.status(200).send(newConvo);
     }
   } catch (error) {
