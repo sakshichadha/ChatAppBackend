@@ -28,6 +28,11 @@ router.post(
 // @desc     Get all conversations of a user
 // @access   Private
 router.get('/conversations',auth, userController.getConversations)
+// @route    POST /api/users/getChatbychatid
+// @desc     Get current conversation
+// @access   Private
+router.post('/conversation',auth, userController.getChatById)
+
 
 
 // @route    POST api/users/newconversation
@@ -35,6 +40,7 @@ router.get('/conversations',auth, userController.getConversations)
 // @access   Private
 router.post('/newConversation',auth, userController.newConversation)
 
+router.get('/getChatby')
 
 
 

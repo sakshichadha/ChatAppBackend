@@ -81,7 +81,7 @@ exports.newConversation = async (req, res) => {
     let oldConvo = await Conversation.findOne({
       recipients: [req.user.id, otherUser.id],
     });
-    
+
     if (oldConvo) {
       //console.log("inside route add conversation hello");
       res.status(200).send(oldConvo);
@@ -89,15 +89,29 @@ exports.newConversation = async (req, res) => {
       //console.log("inside route add conversation old");
       let newConvo = new Conversation({
         recipients: [req.user.id, otherUser.id],
-      })
+      });
       //console.log("inside route add conversation2");
       await newConvo.save();
-      newConvo = await Conversation.findOne({recipients: [req.user.id, otherUser.id],}).populate("recipients")
+      newConvo = await Conversation.findOne({
+        recipients: [req.user.id, otherUser.id],
+      }).populate("recipients");
       //console.log("conversation saved");
       res.status(200).send(newConvo);
     }
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server error");
+  }
+};
+
+exports.getChatById = async (req, res) => {
+  const { chatid } = req.body;
+
+  try {
+    const chat = await Conversation.findById(chatid).populate("recipients");
+    console.log(chat);
+    res.send(chat);
+  } catch (err) {
+    console.log("Server Error" + err);
   }
 };
