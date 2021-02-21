@@ -22,29 +22,33 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 const io = socketio(server);
-// io.on("connection", (socket) => {
-//   // console.log(socket.id);
-//   console.log("a user connected");
-//   // socket.join("room1");
-//   // console.log(socket.rooms);
-//   socket.on("join", (arg) => {
-//     console.log(arg);
-//   });
-// });
+var current_socket;
+
+
 io.on("connection", (socket) => {
   socket.on("join", ({ username, conversation }) => {
+    current_socket = socket;
     UserSocket[username] = socket;
     if (conversation.length) {
       console.log("sockets!!!!!");
       
       conversation.map((conversations) => {
-        // console.log(conversations._id)
-        // console.log("one element");
+        
         socket.join(conversations._id);
       })
-      console.log(socket);
+      //console.log(socket);
     }
   });
+  // socket("newEvent",({text,chatRoomId})=>{
+  //   console.log(text,"socket newEvent");
+  //   socket.to(chatRoomId).emit("newMessage",{text});
+  // });
+});
+
+app.use(function (req,res,next){
+  req.socket = current_socket;
+  
+  next();
 });
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
