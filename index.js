@@ -39,6 +39,12 @@ io.on("connection", (socket) => {
       //console.log(socket);
     }
   });
+  socket.on("new_message",({text,chatRoomId})=>{
+    console.log("new message details")
+    console.log(text)
+    console.log(chatRoomId)
+    socket.to(chatRoomId).emit("emit_message", { text });
+  })
   // socket("newEvent",({text,chatRoomId})=>{
   //   console.log(text,"socket newEvent");
   //   socket.to(chatRoomId).emit("newMessage",{text});
