@@ -17,7 +17,7 @@ const MessageSchema = new Schema({
     type: String,
     required: true,
   },
-  body: {
+  text: {
     type: String,
     required: true,
   },

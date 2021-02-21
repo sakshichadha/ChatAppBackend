@@ -6,7 +6,7 @@ const eventController= require('../controllers/messages')
 // @route    GET api/event
 // @desc     GET messages of a conversation
 // @access   Private
-router.get('/',auth, eventController.getEvents);
+router.post('/getEvents',auth, eventController.getEvents);
 // @route    POST api/event
 // @desc     Create a new event
 // @access   Private
