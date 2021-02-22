@@ -5,7 +5,7 @@ const User = require("../models/users");
 const Conversation = require("../models/Chat");
 const { log_and_send_error } = require("./error");
 const config = require("config");
-const UserToken = require("../UserSocket.json")
+const UserToken = require("../UserSocket.json");
 exports.user_register = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -96,16 +96,15 @@ exports.newConversation = async (req, res) => {
       newConvo = await Conversation.findOne({
         recipients: [req.user.id, otherUser.id],
       }).populate("recipients");
-      
-      console.log("this is socket")
-      
+
+      console.log("this is socket");
+
       req.socket.join(newConvo._id);
-      console.log("hello")
-      console.log(req.socket)
+
       if (UserToken[user_name] !== undefined) {
         console.log("joining the new user");
         UserToken[user_name].join(newConvo._id);
-        req.socket.to(newConvo._id).emit("newConversation",{newConvo});
+        req.socket.to(newConvo._id).emit("newConversation", { newConvo });
       }
 
       console.log("conversation saved");
@@ -122,7 +121,7 @@ exports.getChatById = async (req, res) => {
 
   try {
     const chat = await Conversation.findById(chatid).populate("recipients");
-    console.log(chat);
+
     res.send(chat);
   } catch (err) {
     console.log("Server Error" + err);
