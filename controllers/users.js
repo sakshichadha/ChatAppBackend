@@ -5,7 +5,13 @@ const User = require("../models/users");
 const Conversation = require("../models/Chat");
 const { log_and_send_error } = require("./error");
 const config = require("config");
-const UserToken = require("../UserSocket.json");
+const UserSocket = require("../UserSocket.json");
+
+console.log(UserSocket, "HELLO ABHISHEK");
+UserSocket["mango"] = "juice";
+console.log(UserSocket, "HELLO ABHISHEK1");
+
+const { user_by_token } = require("./auth");
 exports.user_register = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -55,12 +61,11 @@ exports.user_register = async (req, res) => {
 
 exports.getConversations = async (req, res) => {
   try {
-    console.log("inside get convo route");
     const { user_name } = req.body;
     let conversations = await Conversation.find({
       recipients: { $elemMatch: { $eq: req.user.id } },
     }).populate("recipients");
-    console.log(conversations);
+
     res.status(200).send(conversations);
   } catch (error) {
     console.error(error.message);
@@ -70,6 +75,8 @@ exports.getConversations = async (req, res) => {
 
 exports.newConversation = async (req, res) => {
   //console.log("inside route add conversation");
+  //user_name:recipients
+  //me:mera user
   const { user_name } = req.body;
   //console.log(user_name);
   try {
@@ -96,19 +103,25 @@ exports.newConversation = async (req, res) => {
       newConvo = await Conversation.findOne({
         recipients: [req.user.id, otherUser.id],
       }).populate("recipients");
+      const user = User.findById(req.user.id);
+      //console.log(req.socket.id, "my socket");
+      // console.log(req.user.name, "my name");
+      // console.log(user_name, "recipient");
+      console.log(UserSocket[user.name].id, "@@@@@@@");
+      await UserSocket[user.name].join(newConvo._id);
 
-      console.log("this is socket");
+      console.log(UserSocket[user.name].id, "my id ");
+      console.log(UserSocket[user_name], "OP");
 
-      req.socket.join(newConvo._id);
-
-      if (UserToken[user_name] !== undefined) {
-        console.log("joining the new user");
-        UserToken[user_name].join(newConvo._id);
-        req.socket.to(newConvo._id).emit("newConversation", { newConvo });
+      if (UserSocket[user_name] !== undefined) {
+        console.log(UserSocket[user_name], user_name, "s socket");
+        await UserSocket[user_name].join(newConvo._id);
+        console.log("emitiing addConversation", newConvo._id);
+        await UserSocket[user.name]
+          .in(newConvo._id)
+          .emit("newConversation", { newConvo });
       }
-
-      console.log("conversation saved");
-      res.status(200).send(newConvo);
+      await res.status(200).send(newConvo);
     }
   } catch (error) {
     console.error(error.message);
