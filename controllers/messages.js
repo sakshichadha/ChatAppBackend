@@ -146,9 +146,14 @@ exports.newEvent = async (req, res) => {
     await event.save();
     console.log("i am new event ")
     console.log(req.user.id)
-    let users = await User.findById(req.user.id)
-    console.log(users.name)
-    UserSocket[users.name].in(chatRoomId).emit("new_message",{event})
+    //let users = await User.findById(req.user.id)
+    // console.log(users)
+    // console.log(users.name)
+    // console.log(req.user.name)
+    // console.log(UserSocket[req.user.name])
+    console.log("new message")
+    UserSocket[req.user.name].in(chatRoomId).emit("new_message",{event})
+    
     res.status(200).send(event);
   } catch (error) {
     console.error(error.message);
