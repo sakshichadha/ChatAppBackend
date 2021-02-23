@@ -1,24 +1,27 @@
 const express = require("express");
 const connectDB = require("./config/db");
-const dotenv = require("dotenv");
-const http = require("http");
-// import { useState } from "react";
-const cors = require("cors");
-const socketio = require("socket.io");
-const UserSocket = require("./UserSocket.json");
-UserSocket["mang2o"] = "juice";
-console.log(UserSocket, "HELLO ABHISHEK2");
-
 const app = express();
-dotenv.config();
+
+const cors = require("cors");
+const http = require("http");
+
+const socketio = require("socket.io");
+connectDB();
+const UserSocket = require("./UserSocket.json");
+//UserSocket["mang2o"] = "juice";
+//console.log(UserSocket, "HELLO ABHISHEK2");
+app.use(express.json());
+app.use(cors());
+
+
 // const socketio=require('socket.io')
 
 // Connect Database
-connectDB();
+
 
 // Init middleware
 app.use(express.json({ extended: false }));
-app.use(cors());
+
 
 app.get("/", (req, res) => {
   res.send("working");
@@ -26,6 +29,7 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 const io = socketio(server);
+//const io = socketio(server);
 var current_socket;
 // const [dict, setdict] = useState("");
 
@@ -35,11 +39,15 @@ io.on("connection", (socket) => {
   //console.log("connecting the user", socket.id);
   //current_socket = socket;
   //console.log("current_socket", current_socket.id);
+  current_socket = socket;
 
   socket.on("join", ({ me, conversation }) => {
+    console.log("user logged in")
     console.log(me, socket.id);
     UserSocket[me] = socket;
-    UserSocket["mang2567o"] = "juice";
+    //console.log("this is usertoken")
+    //console.log(UserSocket)
+    //UserSocket["mang2567o"] = "juice";
     // console.log(UserSocket, "HELLO ABHISHEK2");
 
     // socket.emit("socket_state", { UserSocket }, (error) => {
@@ -61,6 +69,7 @@ io.on("connection", (socket) => {
       //console.log(socket);
     }
   });
+  
 
   socket.on("new_message", ({ text, chatRoomId }) => {
     console.log("new message details");
@@ -70,11 +79,11 @@ io.on("connection", (socket) => {
   });
 });
 
-// app.use(function (req, res, next) {
-//   req.socket = current_socket;
+app.use(function (req, res, next) {
+  req.socket = current_socket;
 
-//   next();
-// });
+  next();
+});
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/event", require("./routes/messages"));
