@@ -11,4 +11,5 @@ router.post('/getEvents',auth, eventController.getEvents);
 // @desc     Create a new event
 // @access   Private
 router.post('/',auth, eventController.newEvent);
+router.post('/delete',auth, eventController.delete);
 module.exports = router;

@@ -160,3 +160,71 @@ exports.newEvent = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+exports.delete = async (req, res) => {
+  const { chatRoomId, type, messageId, text } = req.body;
+  try {
+    let event = new Event({
+      sender: req.user.id,
+      chatRoomId,
+      messageId,
+      type,
+      text,
+    });
+    
+    // console.log("i am new event delete")
+    // console.log(req.user.id)
+    // const query = { messageId: messageId,type:type};
+    // const update = {
+    //   $set: {
+        
+    //     text: "This message is deleted",
+    //     type: "DELETE"
+    //   }
+    // };
+    //const options = { returnNewDocument: true };
+
+    // await Event.findOneAndUpdate(query,update,{new: true},function(err,docs){
+    //   if(err)
+    //   {
+    //     console.log(err+"error hai")
+    //   }
+    //   else{
+    //     console.log(docs); 
+    //   }
+    // });
+    
+    const def = await  Event.findOne({messageId,type,chatRoomId})
+    if(def)
+    {
+      console.log(def)
+    }
+    else{
+    console.log("shit!")
+    }
+    // const abc = await Event.findOneAndUpdate({messageId,type,chatRoomId},{
+    //   text: "This message is deleted",
+    //     type: "DELETE"
+    // },{new:true});
+
+    //console.log("this is updated",abc)
+    
+    //console.log("abc",abc);
+      
+    
+      
+    //await event.save();
+    //let users = await User.findById(req.user.id)
+    // console.log(users)
+    // console.log(users.name)
+    // console.log(req.user.name)
+    // console.log(UserSocket[req.user.name])
+    console.log("new message")
+    //UserSocket[req.user.name].in(chatRoomId).emit("new_message",{event})
+    
+    res.status(200).send(event);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server error");
+  }
+};

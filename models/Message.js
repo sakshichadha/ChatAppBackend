@@ -12,7 +12,7 @@ const MessageSchema = new Schema({
   },
   messageId: {
     type: Number,
-    required: "true",
+    required: true,
   },
   type: {
     type: String,
