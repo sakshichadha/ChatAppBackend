@@ -3,7 +3,7 @@ const User = require("../models/Message");
 const { log_and_send_error } = require("./error");
 const Event = require("../models/Message");
 const mongoose = require("mongoose");
-const UserSocket = require("../UserSocket.json")
+const UserSocket = require("../UserSocket.json");
 
 exports.getEvents = async (req, res) => {
   console.log("AAAAASHISH");
@@ -144,16 +144,16 @@ exports.newEvent = async (req, res) => {
       text,
     });
     await event.save();
-    console.log("i am new event ")
-    console.log(req.user.id)
+    console.log("i am new event ");
+    console.log(req.user.id);
     //let users = await User.findById(req.user.id)
     // console.log(users)
     // console.log(users.name)
     // console.log(req.user.name)
     // console.log(UserSocket[req.user.name])
-    console.log("new message")
-    UserSocket[req.user.name].in(chatRoomId).emit("new_message",{event})
-    
+    console.log("new message");
+    UserSocket[req.user.name].in(chatRoomId).emit("new_message", { event });
+
     res.status(200).send(event);
   } catch (error) {
     console.error(error.message);
@@ -171,13 +171,13 @@ exports.delete = async (req, res) => {
       type,
       text,
     });
-    
+
     // console.log("i am new event delete")
     // console.log(req.user.id)
     // const query = { messageId: messageId,type:type};
     // const update = {
     //   $set: {
-        
+
     //     text: "This message is deleted",
     //     type: "DELETE"
     //   }
@@ -190,38 +190,37 @@ exports.delete = async (req, res) => {
     //     console.log(err+"error hai")
     //   }
     //   else{
-    //     console.log(docs); 
+    //     console.log(docs);
     //   }
     // });
-    
-    const def = await  Event.findOne({messageId,type,chatRoomId})
-    if(def)
-    {
-      console.log(def)
-    }
-    else{
-    console.log("shit!")
-    }
-    // const abc = await Event.findOneAndUpdate({messageId,type,chatRoomId},{
-    //   text: "This message is deleted",
-    //     type: "DELETE"
-    // },{new:true});
 
-    //console.log("this is updated",abc)
-    
-    //console.log("abc",abc);
-      
-    
-      
+    await Event.findOneAndUpdate(
+      { messageId, type, chatRoomId },
+      {
+        text: "This message is deleted",
+        type: "DELETE",
+      },
+      { new: true }
+    );
+// const e="DELETE"
+
+//     const def = await Event.findOne({ messageId, e, chatRoomId });
+//     if (def) {
+//       console.log(def);
+//     } else {
+//       console.log("shit!");
+//     }
+
     //await event.save();
     //let users = await User.findById(req.user.id)
     // console.log(users)
     // console.log(users.name)
     // console.log(req.user.name)
     // console.log(UserSocket[req.user.name])
-    console.log("new message")
+    console.log("new message");
+    UserSocket[req.user.name].in(chatRoomId).emit("delete_message", { event });
     //UserSocket[req.user.name].in(chatRoomId).emit("new_message",{event})
-    
+
     res.status(200).send(event);
   } catch (error) {
     console.error(error.message);
