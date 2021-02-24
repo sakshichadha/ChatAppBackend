@@ -202,16 +202,15 @@ exports.delete = async (req, res) => {
       },
       { new: true }
     );
-// const e="DELETE"
+    // const e="DELETE"
 
-//     const def = await Event.findOne({ messageId, e, chatRoomId });
-//     if (def) {
-//       console.log(def);
-//     } else {
-//       console.log("shit!");
-//     }
+    //     const def = await Event.findOne({ messageId, e, chatRoomId });
+    //     if (def) {
+    //       console.log(def);
+    //     } else {
+    //       console.log("shit!");
+    //     }
 
-    //await event.save();
     //let users = await User.findById(req.user.id)
     // console.log(users)
     // console.log(users.name)
