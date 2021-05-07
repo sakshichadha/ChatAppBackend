@@ -1,4 +1,4 @@
 {
-
+  //specify mongo URL
   "jwtSecret": "mysecrettoken"
 }
